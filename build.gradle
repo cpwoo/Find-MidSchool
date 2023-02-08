@@ -18,6 +18,14 @@ repositories {
     mavenCentral()
 }
 
+/**
+ * gradle wrapper 를 이용하여 jar 파일을 생성할 때 기본 경로는 build/libs/*.jar
+ * 해당 설정을 통해 jar 파일 이름 app.jar 으로 변경한다.
+ */
+bootJar {
+    archiveFileName = 'app.jar'
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
