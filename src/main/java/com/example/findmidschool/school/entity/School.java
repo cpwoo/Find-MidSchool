@@ -25,4 +25,8 @@ public class School {
     private double latitude;
     private double longitude;
 
+    public void changeAddress(String address) {
+        this.schoolAddress = address;
+    }
+
 }
