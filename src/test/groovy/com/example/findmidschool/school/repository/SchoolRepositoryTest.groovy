@@ -4,6 +4,8 @@ import com.example.findmidschool.AbstractIntegrationContainerBaseTest
 import com.example.findmidschool.school.entity.School
 import org.springframework.beans.factory.annotation.Autowired
 
+import java.time.LocalDateTime
+
 class SchoolRepositoryTest extends AbstractIntegrationContainerBaseTest {
 
     @Autowired
@@ -60,6 +62,28 @@ class SchoolRepositoryTest extends AbstractIntegrationContainerBaseTest {
 
         then:
         result.size() == 1
+
+    }
+
+    def "BaseTimeEntity 등록"() {
+
+        given:
+        LocalDateTime now = LocalDateTime.now()
+        String address = "의왕시 오전동"
+        String name = "모락중학교"
+
+        def school = School.builder()
+                .schoolAddress(address)
+                .schoolName(name)
+                .build()
+
+        when:
+        schoolRepository.save(school)
+        def result = schoolRepository.findAll()
+
+        then:
+        result.get(0).getCreatedDate().isAfter(now)
+        result.get(0).getModifiedDate().isAfter(now)
 
     }
 
