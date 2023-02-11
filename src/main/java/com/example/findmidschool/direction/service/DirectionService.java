@@ -2,10 +2,13 @@ package com.example.findmidschool.direction.service;
 
 import com.example.findmidschool.api.dto.DocumentDto;
 import com.example.findmidschool.direction.entity.Direction;
+import com.example.findmidschool.direction.repository.DirectionRepository;
 import com.example.findmidschool.school.service.SchoolSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,6 +25,15 @@ public class DirectionService {
     private static final double RADIUS_KM = 10.0; // 반경 10km
 
     private final SchoolSearchService schoolSearchService;
+    private final DirectionRepository directionRepository;
+
+    @Transactional
+    public List<Direction> saveAll(List<Direction> directionList) {
+
+        if (CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
+        return directionRepository.saveAll(directionList);
+
+    }
 
     public List<Direction> buildDirectionList(DocumentDto documentDto) {
 

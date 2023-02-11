@@ -36,4 +36,27 @@ class KakaoAddressSearchServiceTest extends AbstractIntegrationContainerBaseTest
 
     }
 
+    def "정상적인 주소를 입력했을 경우, 정상적으로 위도 경도로 반환된다."() {
+
+        given:
+        boolean actualResult = false
+
+        when:
+        def searchResult = sut.requestAddressSearch(inputAddress)
+
+        then:
+        if (searchResult == null) actualResult = false
+        else actualResult = searchResult.getDocumentList().size() > 0
+
+        where:
+        inputAddress           | expectedResult
+        "경기도 의왕시"           | true
+        "의왕시 모락로 110"       | true
+        "의왕시 모락로"           | true
+        "의왕시 모락로 잘못된 주소" | false
+        "의왕시 모락로 11111"     | false
+        ""                     | false
+
+    }
+
 }
