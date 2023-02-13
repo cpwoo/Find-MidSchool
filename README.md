@@ -32,7 +32,11 @@
 
 ## School Recommendation Process
 
+![KakaoTalk_20230214_000846734](https://user-images.githubusercontent.com/88281091/218498289-7884c90f-388c-4575-8bcf-cbeeaaf77cab.jpg)
+
 ## Direction Shorten Url Process
+
+![KakaoTalk_20230214_003347760](https://user-images.githubusercontent.com/88281091/218501533-5b1bab59-3d19-4a6d-90f5-a2709caa90e4.png)
 
 ## Tech Stack
 
