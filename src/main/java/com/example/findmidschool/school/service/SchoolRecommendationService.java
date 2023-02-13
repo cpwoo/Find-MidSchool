@@ -5,12 +5,13 @@ import com.example.findmidschool.api.dto.KakaoApiResponseDto;
 import com.example.findmidschool.api.service.KakaoAddressSearchService;
 import com.example.findmidschool.direction.dto.OutputDto;
 import com.example.findmidschool.direction.entity.Direction;
+import com.example.findmidschool.direction.service.Base62Service;
 import com.example.findmidschool.direction.service.DirectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,9 +25,12 @@ public class SchoolRecommendationService {
 
     private final KakaoAddressSearchService kakaoAddressSearchService;
     private final DirectionService directionService;
+    private final Base62Service base62Service;
 
-    private static final String DIRECTION_BASE_URL = "https://map.kakao.com/link/map/";
     private static final String ROAD_VIEW_BASE_URL = "https://map.kakao.com/link/roadview/";
+
+    @Value("${school.recommendation.base.url}")
+    private String baseUrl;
 
     public List<OutputDto> recommendSchoolList(String address) {
 
@@ -49,16 +53,10 @@ public class SchoolRecommendationService {
 
     private OutputDto convertToOutputDto(Direction direction) {
 
-        String params = String.join(",", direction.getTargetSchoolName(),
-                String.valueOf(direction.getTargetLatitude()), String.valueOf(direction.getTargetLongitude()));
-
-        String result = UriComponentsBuilder.fromHttpUrl(DIRECTION_BASE_URL + params).toUriString(); // 학교명이 한글이기 때문에 인코딩해야한다.
-        log.info("direction params: {}, url: {}", params, result);
-
         return OutputDto.builder()
                 .schoolName(direction.getTargetSchoolName())
                 .schoolAddress(direction.getTargetAddress())
-                .directionUrl(result)
+                .directionUrl(baseUrl + base62Service.encodeDirectionId(direction.getId()))
                 .roadViewUrl(ROAD_VIEW_BASE_URL + direction.getTargetLatitude() + "," + direction.getTargetLongitude())
                 .distance(String.format("%.2f km", direction.getDistance()))
                 .build();
