@@ -1,6 +1,7 @@
 package com.example.findmidschool.direction.service
 
 import com.example.findmidschool.api.dto.DocumentDto
+import com.example.findmidschool.direction.repository.DirectionRepository
 import com.example.findmidschool.school.dto.SchoolDto
 import com.example.findmidschool.school.service.SchoolSearchService
 import spock.lang.Specification
@@ -8,8 +9,11 @@ import spock.lang.Specification
 class DirectionServiceTest extends Specification {
 
     private SchoolSearchService schoolSearchService = Mock()
+    private DirectionRepository directionRepository = Mock()
+    private Base62Service base62Service = Mock()
 
-    private DirectionService directionService = new DirectionService(schoolSearchService)
+    private DirectionService directionService = new DirectionService(
+            schoolSearchService, directionRepository, base62Service)
 
     private List<SchoolDto> schoolList
 
