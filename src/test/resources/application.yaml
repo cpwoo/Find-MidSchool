@@ -8,3 +8,8 @@ spring:
     show-sql: true
 
 kakao.rest.api.key: ${KAKAO_REST_API_KEY}
+
+school:
+  recommendation:
+    base:
+      url: http://localhost:8080/dir/
