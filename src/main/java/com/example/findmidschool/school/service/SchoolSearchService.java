@@ -1,5 +1,6 @@
 package com.example.findmidschool.school.service;
 
+import com.example.findmidschool.school.cache.SchoolRedisTemplateService;
 import com.example.findmidschool.school.dto.SchoolDto;
 import com.example.findmidschool.school.entity.School;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,18 @@ import java.util.stream.Collectors;
 public class SchoolSearchService {
 
     private final SchoolRepositoryService schoolRepositoryService;
+    private final SchoolRedisTemplateService schoolRedisTemplateService;
 
     public List<SchoolDto> searchSchoolDtoList() {
 
+        // redis
+        List<SchoolDto> schoolDtoList = schoolRedisTemplateService.findAll();
+        if (!schoolDtoList.isEmpty()) {
+            log.info("redis findAll success!");
+            return schoolDtoList;
+        }
+
+        // db
         return schoolRepositoryService.findAll()
                 .stream()
                 .map(this::convertToSchoolDto)
